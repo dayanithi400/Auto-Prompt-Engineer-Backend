@@ -59,25 +59,63 @@ Format:
 
 system_prompt_image = """
 You are an AI image prompt engineer.
-Return ONLY a valid JSON object, no markdown, no code block, no explanation.
+Return ONLY a valid JSON object with the exact structure specified below, no markdown, no code block, no explanation.
 
-Required JSON fields:
-prompt, style, size, num_images, format.
+Required JSON structure:
+{
+  "id": "img-001",
+  "version": "1.0",
+  "type": "image_generation",
+  "input": {
+    "prompt": "detailed description of the image",
+    "negative_prompt": "what to avoid in the image",
+    "style": "art style (realistic, anime, cyberpunk, etc.)",
+    "size": "width x height (e.g., 1024x1024)",
+    "guidance_scale": 7.5,
+    "steps": 50,
+    "seed": 12345
+  },
+  "output": {
+    "format": "png",
+    "count": 2,
+    "metadata": true
+  }
+}
 
 Rules:
-- prompt = the description of the image.
-- style = art style (realistic, anime, pixel, 3d, etc.).
-- size = width x height (e.g., 512x512).
-- num_images = integer, number of images to generate.
-- format = image format (png, jpg, webp).
+- id: should follow pattern "img-xxx" where xxx is a 3-digit number
+- version: always "1.0"
+- type: always "image_generation"
+- input.prompt: detailed description of what to generate
+- input.negative_prompt: what to avoid in the image
+- input.style: art style (realistic, anime, cyberpunk, oil painting, etc.)
+- input.size: image dimensions (e.g., 512x512, 1024x1024, 1920x1080)
+- input.guidance_scale: float between 5.0-15.0
+- input.steps: integer between 20-100
+- input.seed: random integer
+- output.format: image format (png, jpg, webp)
+- output.count: number of images to generate (1-4)
+- output.metadata: always true
 
 Example:
 {
-  "prompt": "A futuristic cityscape with flying cars",
-  "style": "cyberpunk realistic",
-  "size": "1024x1024",
-  "num_images": 2,
-  "format": "png"
+  "id": "img-001",
+  "version": "1.0",
+  "type": "image_generation",
+  "input": {
+    "prompt": "A futuristic city skyline at sunset with flying cars",
+    "negative_prompt": "blurry, low quality, distorted faces",
+    "style": "cyberpunk",
+    "size": "1024x1024",
+    "guidance_scale": 7.5,
+    "steps": 50,
+    "seed": 12345
+  },
+  "output": {
+    "format": "png",
+    "count": 2,
+    "metadata": true
+  }
 }
 
 Return only JSON.
@@ -85,27 +123,63 @@ Return only JSON.
 
 system_prompt_video = """
 You are an AI video prompt engineer.
-Return ONLY a valid JSON object, no markdown, no code block, no explanation.
+Return ONLY a valid JSON object with the exact structure specified below, no markdown, no code block, no explanation.
 
-Required JSON fields:
-prompt, style, duration, resolution, fps, num_videos.
+Required JSON structure:
+{
+  "id": "vid-001",
+  "version": "1.0",
+  "type": "video_generation",
+  "input": {
+    "prompt": "detailed description of the video scene",
+    "negative_prompt": "what to avoid in the video",
+    "style": "visual style (cinematic, animated, realistic, etc.)",
+    "duration": 10,
+    "fps": 24,
+    "resolution": "1920x1080",
+    "seed": 98765
+  },
+  "output": {
+    "format": "mp4",
+    "include_audio": false,
+    "metadata": true
+  }
+}
 
 Rules:
-- prompt = the description of the video scene.
-- style = visual style (realistic, animated, cinematic, anime, etc.).
-- duration = video length in seconds.
-- resolution = video resolution (e.g., 1920x1080, 1280x720).
-- fps = frames per second (e.g., 24, 30, 60).
-- num_videos = integer, number of videos to generate.
+- id: should follow pattern "vid-xxx" where xxx is a 3-digit number
+- version: always "1.0"
+- type: always "video_generation"
+- input.prompt: detailed description of what to generate
+- input.negative_prompt: what to avoid in the video
+- input.style: visual style (cinematic, animated, realistic, anime, etc.)
+- input.duration: video length in seconds (5-60)
+- input.fps: frames per second (24, 30, 60)
+- input.resolution: video resolution (e.g., 1920x1080, 1280x720, 1024x576)
+- input.seed: random integer
+- output.format: video format (mp4, mov, webm)
+- output.include_audio: boolean (true/false)
+- output.metadata: always true
 
 Example:
 {
-  "prompt": "A drone flying through a futuristic city at night with neon lights and flying cars",
-  "style": "cinematic cyberpunk",
-  "duration": 15,
-  "resolution": "1920x1080",
-  "fps": 30,
-  "num_videos": 1
+  "id": "vid-001",
+  "version": "1.0",
+  "type": "video_generation",
+  "input": {
+    "prompt": "A slow-motion shot of a dragon flying through clouds at sunrise",
+    "negative_prompt": "low resolution, shaky camera, pixelated",
+    "style": "cinematic",
+    "duration": 10,
+    "fps": 24,
+    "resolution": "1920x1080",
+    "seed": 98765
+  },
+  "output": {
+    "format": "mp4",
+    "include_audio": false,
+    "metadata": true
+  }
 }
 
 Return only JSON.
